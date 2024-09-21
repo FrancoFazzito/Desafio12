@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nestjs-app-primary  # Renamed to a unique deployment name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-nestjs-app-primary  # Match the new deployment name
+  template:
+    metadata:
+      labels:
+        app: my-nestjs-app-primary  # Match the new deployment name
+    spec:
+      containers:
+      - name: nestjs
+        image: "francofazzito/desafiokubernetes:latest"
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 3000
+        env:
+        - name: MONGO_DB_URI
+          value: "mongodb://mongo:mongo123@mongodb-service:27017/test"  # Definir la URI completa de conexión
+        - name: MONGO_DB_NAME
+          value: "test"
+        - name: MONGO_DB_USER
+          value: "mongo"
+        - name: MONGO_DB_PASS
+          value: "mongo123"
+
+

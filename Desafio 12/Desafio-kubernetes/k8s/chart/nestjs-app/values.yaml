@@ -1,0 +1,40 @@
+mongodb:
+  replicaCount: 1
+  image: mongo
+  tag: latest
+  dbUser: mongo
+  dbPassword: mongo123
+  dbName: test
+
+nestjs:
+  image: francofazzito/desafiokubernetes
+  tag: latest
+  pullPolicy: IfNotPresent
+  port: 3000  # Assuming you are using this port in your deployment
+
+serviceAccount:
+  create: true  # Whether to create a new service account or not
+  name: ""      # Optional: A name for the service account, leave empty to auto-generate one
+
+service:
+  type: ClusterIP      # Default to ClusterIP, change as needed (e.g., LoadBalancer)
+  port: 80             # Default port, adjust according to your application needs
+
+ingress:
+  enabled: false  # Change to `true` to enable ingress
+  annotations: {}
+  hosts:
+    - host: "chart-example.local"
+      paths: []
+
+autoscaling:
+  enabled: false  # Set to `true` to enable HPA
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+env:
+  MONGO_DB_URI: "mongodb://mongo:mongo123@mongodb-service:27017/test"
+  MONGO_DB_NAME: "test"
+  MONGO_DB_USER: "mongo"
+  MONGO_DB_PASS: "mongo123"
